@@ -256,7 +256,6 @@ screen quick_menu():
             textbutton _("Save") action ShowMenu('save')
             textbutton _("Q.Save") action QuickSave()
             textbutton _("Q.Load") action QuickLoad()
-            textbutton _("Prefs") action ShowMenu('preferences')
 
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
@@ -287,48 +286,41 @@ style quick_button_text:
 
 screen navigation():
 
-    vbox:
+    hbox:
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.5
+        xalign 0.5
+        yalign 1.0
 
         spacing gui.navigation_spacing
 
         if main_menu:
 
-            textbutton _("Start") action Start()
+            textbutton _("Start") action Start() text_style "textbutton_style"
 
         else:
 
-            textbutton _("History") action ShowMenu("history")
+            textbutton _("History") action ShowMenu("history") text_style "textbutton_style"
 
-            textbutton _("Save") action ShowMenu("save")
+            textbutton _("Save") action ShowMenu("save") text_style "textbutton_style"
 
-        textbutton _("Load") action ShowMenu("load")
-
-        textbutton _("Preferences") action ShowMenu("preferences")
+        textbutton _("Load") action ShowMenu("load") text_style "textbutton_style"
 
         if _in_replay:
 
-            textbutton _("End Replay") action EndReplay(confirm=True)
+            textbutton _("End Replay") action EndReplay(confirm=True) text_style "textbutton_style"
 
         elif not main_menu:
 
-            textbutton _("Main Menu") action MainMenu()
+            textbutton _("Main Menu") action MainMenu() text_style "textbutton_style"
 
-        textbutton _("About") action ShowMenu("about")
+        textbutton _("About") action ShowMenu("about") text_style "textbutton_style"
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## Help isn't necessary or relevant to mobile devices.
-            textbutton _("Help") action ShowMenu("help")
-
-        if renpy.variant("pc"):
-
-            ## The quit button is banned on iOS and unnecessary on Android and
-            ## Web.
-            textbutton _("Quit") action Quit(confirm=not main_menu)
+            textbutton _("Help") action ShowMenu("help") text_style "textbutton_style"
 
 
 style navigation_button is gui_button
@@ -381,6 +373,16 @@ style main_menu_text is gui_text
 style main_menu_title is main_menu_text
 style main_menu_version is main_menu_text
 
+style text_style:
+    color "#fff"
+    outlines [(5, "#000", 0, 0)]
+
+style textbutton_style:
+    size 36
+    yoffset -5
+    outlines [(1, "#000", 0, 0)]
+    hover_color gui.hover_color
+
 style main_menu_frame:
     xsize 420
     yfill True
@@ -388,20 +390,20 @@ style main_menu_frame:
     background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
-    xalign 1.0
-    xoffset -30
+    xalign 0.95
     xmaximum 1200
-    yalign 1.0
-    yoffset -30
+    yalign 0.05
 
 style main_menu_text:
     properties gui.text_properties("main_menu", accent=True)
 
-style main_menu_title:
+style main_menu_title is text_style:
     properties gui.text_properties("title")
+    xalign 1.0
 
-style main_menu_version:
+style main_menu_version is text_style:
     properties gui.text_properties("version")
+    xalign 1.0
 
 
 ## Game Menu screen ############################################################
@@ -417,19 +419,12 @@ screen game_menu(title, scroll=None, yinitial=0.0):
 
     style_prefix "game_menu"
 
-    if main_menu:
-        add gui.main_menu_background
-    else:
-        add gui.game_menu_background
+    add gui.main_menu_background
 
     frame:
         style "game_menu_outer_frame"
 
         hbox:
-
-            ## Reserve space for the navigation section.
-            frame:
-                style "game_menu_navigation_frame"
 
             frame:
                 style "game_menu_content_frame"
@@ -471,6 +466,7 @@ screen game_menu(title, scroll=None, yinitial=0.0):
 
     textbutton _("Return"):
         style "return_button"
+        text_style "return_button_text"
 
         action Return()
 
@@ -494,7 +490,7 @@ style return_button is navigation_button
 style return_button_text is navigation_button_text
 
 style game_menu_outer_frame:
-    bottom_padding 45
+    bottom_padding 75
     top_padding 180
 
     background "gui/overlay/game_menu.png"
@@ -504,12 +500,12 @@ style game_menu_navigation_frame:
     yfill True
 
 style game_menu_content_frame:
-    left_margin 60
+    left_margin 120
     right_margin 30
     top_margin 15
 
 style game_menu_viewport:
-    xsize 1380
+    xsize 1640
 
 style game_menu_vscrollbar:
     unscrollable gui.unscrollable
@@ -527,10 +523,14 @@ style game_menu_label_text:
     yalign 0.5
 
 style return_button:
-    xpos gui.navigation_xpos
-    yalign 1.0
-    yoffset -45
+    xpos 1.0
+    xalign 1.0
+    xoffset -150
+    ypos 0.0
+    yoffset 65
 
+style return_button_text is textbutton_style:
+    size 36
 
 ## About screen ################################################################
 ##
@@ -967,7 +967,7 @@ screen help():
         style_prefix "help"
 
         vbox:
-            spacing 23
+            spacing 12
 
             hbox:
 
@@ -1234,7 +1234,7 @@ style skip_text:
 style skip_triangle:
     ## We have to use a font that has the BLACK RIGHT-POINTING SMALL TRIANGLE
     ## glyph in it.
-    font "DejaVuSans.ttf"
+    font "fonts/ja-jp.ttf"
 
 
 ## Notify screen ###############################################################
