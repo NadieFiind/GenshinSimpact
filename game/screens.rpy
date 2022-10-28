@@ -256,6 +256,7 @@ screen quick_menu():
             textbutton _("Save") action ShowMenu('save')
             textbutton _("Q.Save") action QuickSave()
             textbutton _("Q.Load") action QuickLoad()
+            textbutton _("Main Menu") action MainMenu()
 
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
@@ -462,7 +463,8 @@ screen game_menu(title, scroll=None, yinitial=0.0):
 
                     transclude
 
-    use navigation
+    if main_menu:
+        use navigation
 
     textbutton _("Return"):
         style "return_button"

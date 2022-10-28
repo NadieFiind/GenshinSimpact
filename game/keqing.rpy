@@ -4,4 +4,3 @@ label keqing:
     
     traveler "Hello!"
     keqing "Hi!"
-    keqing "Hi!"
