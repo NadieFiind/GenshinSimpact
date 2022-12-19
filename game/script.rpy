@@ -1,5 +1,4 @@
 ﻿define traveler = Character("[player_name]")
-define keqing = Character("Keqing")
 
 label start:
     scene expression "#000"
